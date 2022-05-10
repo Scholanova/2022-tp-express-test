@@ -1,5 +1,5 @@
 const faker = require('faker')
-const { expect, knex } = require('./test-helper')
+const { expect, knex } = require('../test-helper')
 const { UserRepository } = require('../../lib/repositories/user-repository')
 const { User } = require('../../lib/models/user')
 const { ResourceNotFoundError } = require('../../lib/errors')
