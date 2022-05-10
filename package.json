@@ -2,6 +2,9 @@
   "name": "tp-express-mai",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "16.15.0"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
@@ -17,7 +20,8 @@
     "db:prepare": "npm run db:delete && npm run db:create && npm run db:migrate",
     "db:seed": "npm run knex -- seed:run",
     "db:reset": "npm run db:prepare && npm run db:seed",
-    "knex": "knex --knexfile db/knexfile.js"
+    "knex": "knex --knexfile db/knexfile.js",
+    "scalingo-post-deploy": "npm run db:migrate"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
