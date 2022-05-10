@@ -1,4 +1,4 @@
-# TP EXPRESS KNEX TEST
+# TP EXPRESS TEST
 
 ## CONSIGNES GÉNÉRALES
 Le projet correspondant aux cours de la semaine du 09 mai 2022.
