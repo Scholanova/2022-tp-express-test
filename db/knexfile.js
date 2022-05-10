@@ -7,9 +7,22 @@ if (process.env.NODE_ENV === 'test') {
   console.log('DB_TEST_HOST', process.env.DB_TEST_HOST)
 } else if (process.env.NODE_ENV === 'development') {
   console.log('DB_HOST', process.env.DB_HOST)
+} else if (process.env.NODE_ENV === 'production') {
+  console.log('DB_HOST', 'production url from env')
 }
 
 module.exports = {
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './migrations',
+    },
+    seeds: {
+      directory: './seeds',
+    },
+  },
   development: {
     client: 'pg',
     connection: {
