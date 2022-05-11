@@ -7,7 +7,8 @@ let userService
 
 beforeEach(async () => {
   userRepository = {
-    getById: sinon.stub()
+    getById: sinon.stub(),
+    save: sinon.stub(),
   }
   userService = new UserService({ userRepository })
 })
@@ -37,6 +38,8 @@ describe('createNewUser', () => {
     // https://www.chaijs.com/plugins/sinon-chai/
     // le mock est ici présent sur le chemin userRepository.getById
     // donc par exemple expect(userRepository.getById).to.have.been.calledWith('foo')
+    // on peut aussi récupérer tous les appels à un mock grace à la fonction getCalls
+    // exemple : userRepository.save.getCalls()
     it('should call the repository with a User to save')
     it('should resolve with the saved User')
   })

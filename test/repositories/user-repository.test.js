@@ -112,8 +112,8 @@ describe('save', () => {
 
     it('the promise should return the user with the name', () => {
       let expectedUserData = { name: newUser.name }
-      return expect(userPromise).to.eventually.deep.include(expectedUserData)
-        .and.to.be.an.instanceof(User)
+      return expect(userPromise).to.eventually.be.an.instanceof(User)
+        .and.to.deep.include(expectedUserData)
         .and.to.have.a.property('id').that.is.not.undefined
     })
 
