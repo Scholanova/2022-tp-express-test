@@ -62,7 +62,7 @@ describe('getById', () => {
 // Sauver un utilisateur
 // Si l'utilisateur n'existe pas, le créer
 // Si l'utilisateur existe déjà, le mettre à jour
-describe.skip('save', () => {
+describe('save', () => {
   let userPromise
   let john
   let johnSql
@@ -88,12 +88,14 @@ describe.skip('save', () => {
     })
 
     it('the promise should return the user with the updated name', () => {
-      let expectedUser = undefined
-      return expect(userPromise).to.eventually.to.deep.equal(undefined)
+      let expectedUserData = { id: john.id, name: updatedUser.name }
+      return expect(userPromise).to.eventually.to.deep.equal(expectedUserData).and.to.be.an.instanceof(User)
     })
 
     it('the user should be updated in database', () => {
-      return knex
+      const getJohnFromDBPromise = knex('users').select('*').where('id', john.id).first()
+      const updatedJohnData = { id: johnSql.id, name: updatedUser.name }
+      return expect(getJohnFromDBPromise).to.eventually.deep.equal(updatedJohnData)
     })
   })
 
@@ -108,12 +110,21 @@ describe.skip('save', () => {
       return expect(userPromise).to.be.fulfilled
     })
 
-    it('the promise should return the user with an id', () => {
-      return expect(userPromise).to.eventually.to.deep.equal(undefined)
+    it('the promise should return the user with the name', () => {
+      let expectedUserData = { name: newUser.name }
+      return expect(userPromise).to.eventually.deep.include(expectedUserData)
+        .and.to.be.an.instanceof(User)
+        .and.to.have.a.property('id').that.is.not.undefined
     })
 
-    it('the user should exist in database', () => {
-      return knex
+    it('the user should exist in database', async () => {
+      const savedUser = await userPromise
+      const userInDB = await knex('users')
+        .select('*')
+        .where('id', savedUser.id)
+        .first()
+
+      expect(userInDB).to.deep.equal(savedUser)
     })
   })
 })
