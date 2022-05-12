@@ -1,6 +1,8 @@
 const faker = require('faker')
 const { expect, sinon, knex } = require('../test-helper')
 const { UserService } = require('../../lib/services/user-service')
+const { User } = require('../../lib/models/user')
+const { InvalidUserNameError } = require('../../lib/errors')
 
 let userRepository
 let userService
@@ -20,8 +22,13 @@ beforeEach(async () => {
 // Et il ne doit contenir que des caractères de l'alphabet. Pas de caractères spéciaux, ni de chiffres.
 // Si il est valide on créé l'utilisateur sur le UserRepository et on retourne le User créé
 // Si il est invalide on renvoie une erreur métier
-describe('createNewUser', () => {
+describe.only('createNewUser', () => {
+  let createUserPromise
+
   describe('new user name is valid', () => {
+
+    let userName
+    let createdUser
 
     beforeEach(() => {
       // La syntaxe pour configurer un stub est
@@ -31,6 +38,13 @@ describe('createNewUser', () => {
       // https://sinonjs.org/releases/v14/stubs/
       // le stub est ici présent sur le chemin userRepository.getById (on l'a créé ligne 10)
       // donc par exemple userRepository.getById.returns(3)
+
+      userName = 'Jérôme'
+      createdUser = new User({ id: faker.datatype.uuid(), name: userName })
+
+      userRepository.save.resolves(createdUser)
+
+      createUserPromise = userService.createNewUser({ name: userName })
     })
 
     // La syntaxe pour vérifier qu'un mock a bien été appelé est
@@ -40,11 +54,30 @@ describe('createNewUser', () => {
     // donc par exemple expect(userRepository.getById).to.have.been.calledWith('foo')
     // on peut aussi récupérer tous les appels à un mock grace à la fonction getCalls
     // exemple : userRepository.save.getCalls()
-    it('should call the repository with a User to save')
-    it('should resolve with the saved User')
+    it('should call the repository with a User to save', async () => {
+      await createUserPromise
+      const expectedUserToSave = new User({ id: undefined, name: userName })
+      expect(userRepository.save).to.have.been.deep.calledOnceWith({ user: expectedUserToSave })
+    })
+
+    it('should resolve with the saved User', () => {
+      return expect(createUserPromise).to.eventually.equal(createdUser)
+    })
   })
-  describe('new user name is not valid', () => {
-    it('should not call the repository')
-    it('should reject with a InvalidNameError')
+
+  describe('new user name is too short', () => {
+    beforeEach(() => {
+      userName = 'J'
+      createUserPromise = userService.createNewUser({ name: userName })
+    })
+
+    it('should not call the repository', async () => {
+      await createUserPromise.catch(() => undefined)
+      expect(userRepository.save).to.not.have.been.called
+    })
+
+    it('should reject with a InvalidNameError', () => {
+      return expect(createUserPromise).to.be.rejectedWith(InvalidUserNameError)
+    })
   })
 })
