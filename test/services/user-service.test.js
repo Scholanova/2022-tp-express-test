@@ -80,4 +80,20 @@ describe.only('createNewUser', () => {
       return expect(createUserPromise).to.be.rejectedWith(InvalidUserNameError)
     })
   })
+
+  describe('new user name is with specials characters', () => {
+    beforeEach(() => {
+      userName = 'me3zaa'
+      createUserPromise = userService.createNewUser({ name: userName })
+    })
+
+    it('should not call the repository', async () => {
+      await createUserPromise.catch(() => undefined)
+      expect(userRepository.save).to.not.have.been.called
+    })
+
+    it('should reject with a InvalidNameError', () => {
+      return expect(createUserPromise).to.be.rejectedWith(InvalidUserNameError)
+    })
+  })
 })
