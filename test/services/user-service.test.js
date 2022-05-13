@@ -22,7 +22,7 @@ beforeEach(async () => {
 // Et il ne doit contenir que des caractères de l'alphabet. Pas de caractères spéciaux, ni de chiffres.
 // Si il est valide on créé l'utilisateur sur le UserRepository et on retourne le User créé
 // Si il est invalide on renvoie une erreur métier
-describe.only('createNewUser', () => {
+describe('createNewUser', () => {
   let createUserPromise
 
   describe('new user name is valid', () => {
