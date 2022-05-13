@@ -67,24 +67,72 @@ describe.only('calculateUserCollectionValue', () => {
   })
 
   describe('when user has only one Bacoste shoe', () => {
-
-    it('should call the repository with the user Id')
-    it('should return 150€ value for a normal shoe')
-
+    let shoesValue
+    //Etant donné
+    beforeEach(async () => {
+      const userShoe = new Shoe({
+        model: 'Crocodile',
+        brand: 'Bacoste',
+        userId: userId,
+        id: 1,
+      })
+      shoeRepository.listForUserId.resolves([userShoe])
+      //Quand
+      shoesValue = await shoeService.calculateUserCollectionValue({ userId })
+    })
+    //Alors
+    it('should call the repository with the user Id', () => {
+      expect(shoeRepository.listForUserId).to.have.been.deep.calledOnceWith({ userId })
+    })
+    it('should return 150€ value for a Bacoste shoe', () => {
+      expect(shoesValue).to.be.equal(150)
+    })
   })
 
   describe('when user has only one Bucci shoe', () => {
-
-    it('should call the repository with the user Id')
-
-    it('should return 250€ value for a normal shoe')
+    let shoesValue
+    //Etant donné
+    beforeEach(async () => {
+      const userShoe = new Shoe({
+        model: 'Rhaiton',
+        brand: 'Bucci',
+        userId: userId,
+        id: 2,
+      })
+      shoeRepository.listForUserId.resolves([userShoe])
+      //Quand
+      shoesValue = await shoeService.calculateUserCollectionValue({ userId })
+    })
+    //Alors
+    it('should call the repository with the user Id', () => {
+      expect(shoeRepository.listForUserId).to.have.been.deep.calledOnceWith({ userId })
+    })
+    it('should return 250€ value for a Bucci shoe', () => {
+      expect(shoesValue).to.be.equal(250)
+    })
   })
 
   describe('when user has only one Bobotin shoe', () => {
-
-    it('should call the repository with the user Id')
-
-    it('should return 350€ value for a normal shoe')
+    let shoesValue
+    //Etant donné
+    beforeEach(async () => {
+      const userShoe = new Shoe({
+        model: 'Mocassin a glands',
+        brand: 'Bobotin',
+        userId: userId,
+        id: 3,
+      })
+      shoeRepository.listForUserId.resolves([userShoe])
+      //Quand
+      shoesValue = await shoeService.calculateUserCollectionValue({ userId })
+    })
+    //Alors
+    it('should call the repository with the user Id', () => {
+      expect(shoeRepository.listForUserId).to.have.been.deep.calledOnceWith({ userId })
+    })
+    it('should return 350€ value for a Bobotin shoe', () => {
+      expect(shoesValue).to.be.equal(350)
+    })
   })
 
   describe('when user has multiple shoes', () => {
