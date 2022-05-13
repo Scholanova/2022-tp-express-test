@@ -20,4 +20,33 @@ beforeEach(async () => {
 // > Bucci = 250€
 // > Bobotin = 350€
 describe('calculateUserCollectionValue', () => {
+  describe('when user has only no shoes', () => {
+    it('should call the repository with the user Id')
+    it('should return a value of 0€')
+  })
+
+  describe('when user has only one normal shoe', () => {
+    it('should call the repository with the user Id')
+    it('should return 100€ value for a normal shoe')
+  })
+
+  describe('when user has only one Bacoste shoe', () => {
+    it('should call the repository with the user Id')
+    it('should return 150€ value for a normal shoe')
+  })
+
+  describe('when user has only one Bucci shoe', () => {
+    it('should call the repository with the user Id')
+    it('should return 250€ value for a normal shoe')
+  })
+
+  describe('when user has only one Bobotin shoe', () => {
+    it('should call the repository with the user Id')
+    it('should return 350€ value for a normal shoe')
+  })
+
+  describe('when user has multiple shoes', () => {
+    it('should call the repository with the user Id')
+    it('should return the sum of all the user’s shoes')
+  })
 })
