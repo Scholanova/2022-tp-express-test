@@ -136,9 +136,35 @@ describe.only('calculateUserCollectionValue', () => {
   })
 
   describe('when user has multiple shoes', () => {
+    let shoesValue
+    //Etant donné
+    beforeEach(async () => {
+      const userShoes = [
+        new Shoe({ id: 1, model: "Normal", brand: "Niko", userId}),
+        new Shoe({
+          id: 3,
+          model: 'Mocassin a glands',
+          brand: 'Bobotin',
+          userId
+        }),
+        new Shoe({
+          id: 2,
+          model: 'Rhaiton',
+          brand: 'Bucci',
+          userId
+        })
+      ]
+      shoeRepository.listForUserId.resolves(userShoes)
+      //Quand
+      shoesValue = await shoeService.calculateUserCollectionValue({ userId })
+    })
 
-    it('should call the repository with the user Id')
+    it('should call the repository with the user Id', () => {
+      expect(shoeRepository.listForUserId).to.have.been.deep.calledOnceWith({ userId })
+    })
 
-    it('should return the sum of all the user’s shoes')
+    it('should return the sum of all the user’s shoes', () => {
+      expect(shoesValue).to.be.equal(700)
+    })
   })
 })
